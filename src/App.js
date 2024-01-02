@@ -1,55 +1,60 @@
 import './App.css';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import {useState} from 'react'
+import { useState } from "react";
+import { Container, ButtonGroup, Button, TextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { blueGrey } from "@mui/material/colors";
+import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 
-function App() {
-  const [counter, setCounter] = useState(0);
 
-  const handleClick1 = () => {
-    setCounter(counter + 1)
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(blueGrey[50]),
+  backgroundColor: blueGrey[50],
+  borderColor: blueGrey[200],
+  "&:hover": {
+    backgroundColor: blueGrey[100],
+    borderColor: blueGrey[300]
   }
- 
-  const handleClick2 = () => {
-  if(counter === 0)
-    {
-      return 0;
+}));
+
+const StyledInput = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderRadius: 0,
+      borderColor: blueGrey[200]
+    },
+    "&:hover fieldset": {
+      borderColor: blueGrey[300]
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: blueGrey[500]
+    },
+    "& input": {
+      textAlign: "center",
+      width: 60,
+      color: blueGrey[700]
     }
-     else {
-    setCounter(counter - 1)
-    }
   }
-
-  const handleClick3 = () => {
-    // Counter state is incremented
-    setCounter(counter === 0);
-    window.location.reload()
-  }
+});
 
 
+export default function App() {
+  const [count, setCount] = useState(1);
+  const handleChange = (event) => {
+    setCount(Math.max(Number(event.target.value), 1));
+  };
   return (
-    <div className="app">
-      <div className='container'>
-        <div className='total_amount_card' style={{ backgroundImage: `linear-gradient(to right,  rgba(253, 230, 90, 100%), rgba(204, 254, 87, 100%))` }}>
-          <div className='right'>
-            <svg onClick={handleClick3} xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="17" height="17"><path d="M21.962,12.875A10.03,10.03,0,1,1,19.122,5H16a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h4.143A1.858,1.858,0,0,0,22,5.143V1a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1V3.078A11.985,11.985,0,1,0,23.95,13.1a1.007,1.007,0,0,0-1-1.1h0A.982.982,0,0,0,21.962,12.875Z" /></svg>
-          </div>
-
-          <div className='card_text'>
-            <h3 className='total_amount_heading'>{counter}</h3>
-          </div>
-        </div>
-        <form>
-          <div className='button_collection'>
-            <Stack spacing={2} direction="row">
-              <Button onClick={handleClick1} variant="contained" className='btn_one'>+</Button>
-              <Button onClick={handleClick2} variant="contained" className='btn_two'>-</Button>
-            </Stack>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Container>
+      <ButtonGroup>
+        <StyledButton
+          onClick={() => setCount((prev) => prev - 1)}
+          disabled={count === 1}
+        > - </StyledButton>
+        <StyledInput size="small" onChange={handleChange} value={count} />
+        <StyledButton onClick={() => setCount((prev) => prev + 1)}>
+        +
+        </StyledButton>
+      </ButtonGroup>
+    </Container>
   );
 }
-
-export default App;
